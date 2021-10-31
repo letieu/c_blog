@@ -10,7 +10,13 @@ const props = defineProps({
 });
 const emit = defineEmits(['update:modelValue']);
 
-const isClient = computed(() => process?.client);
+const isClient = computed(() => {
+    if (typeof process == 'undefined') {
+      return true;
+    } else {
+      return process?.client;
+    }
+  });
 let editor = ref();
 
 watchEffect(async () => {

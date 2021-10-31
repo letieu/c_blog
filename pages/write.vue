@@ -21,9 +21,9 @@
 				<div class="select" v-show="step == 1">
 					<select v-model="article.category" class="">
 						<option hidden value="">Category</option>
-						<option value="c1">With options</option>
-						<option value="c2">With options</option>
-						<option value="c3">With options</option>
+						<option value="c1">With options 1</option>
+						<option value="c2">With options 2</option>
+						<option value="c3">With options 3</option>
 					</select>
 				</div>
 				<div>
@@ -39,8 +39,12 @@
 
 <script setup>
 import { reactive } from 'vue';
-const editor = ref(null);
+import { collection, addDoc, getFirestore } from "firebase/firestore";
+import {useUserStore} from "../stores/user";
+
 const step = ref(0);
+const userStore = useUserStore();
+const db = getFirestore();
 const next = () => {
 	if (step.value === 1) {
 		save();
@@ -48,9 +52,12 @@ const next = () => {
 	step.value ++;
 };
 const back = () => step.value --;
-const save = () => {
+const save = async () => {
 	article.modifiedAt = new Date();
-	/// save to firebase
+	const docRef = await addDoc(collection(db, "articles"), {
+		...article,
+	});
+	console.log("Document written with ID: ", docRef.id);
 }
 const article = reactive({
 	content: {},
@@ -58,6 +65,7 @@ const article = reactive({
 	category: '',
 	pined: false,
 	modifiedAt: null,
+	author: userStore.email,
 })
 </script>
 
