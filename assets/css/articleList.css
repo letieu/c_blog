@@ -1,0 +1,23 @@
+.article_image img {
+    border-radius: 0.25rem;
+    width: 281.6px;
+    height: 176px;
+}
+
+.article_nav {
+    position: absolute;
+    padding: inherit;
+    bottom: 0;
+    right: 0;
+}
+
+.article_nav > div {
+    margin-left: 15px;
+}
+
+.articles .tabs ul {
+    border-bottom: none;
+}
+.articles .tabs {
+    border-bottom: 1px solid #dbdbdb;
+}

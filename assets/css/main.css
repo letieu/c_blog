@@ -1,0 +1,6 @@
+@import './header.css';
+@import './articleList.css';
+
+body {
+    padding-top: 100px;
+}
