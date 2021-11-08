@@ -39,12 +39,10 @@
 
 <script setup>
 import { reactive } from 'vue';
-import { collection, addDoc, getFirestore } from "firebase/firestore";
-import {useUserStore} from "../stores/user";
+import { useNuxtApp } from '#app';
 
+const { $supabase } = useNuxtApp();
 const step = ref(0);
-const userStore = useUserStore();
-const db = getFirestore();
 const next = () => {
 	if (step.value === 1) {
 		save();
@@ -53,19 +51,17 @@ const next = () => {
 };
 const back = () => step.value --;
 const save = async () => {
-	article.modifiedAt = new Date();
-	const docRef = await addDoc(collection(db, "articles"), {
-		...article,
-	});
-	console.log("Document written with ID: ", docRef.id);
+	const { data, error } = await $supabase
+		.from('articles')
+		.insert([
+			article,
+		]);
 }
 const article = reactive({
 	content: {},
 	title: '',
-	category: '',
-	pined: false,
-	modifiedAt: null,
-	author: userStore.email,
+	slug: '',
+	pinned: false,
 })
 </script>
 

@@ -29,14 +29,13 @@
 							<nuxt-link to="/write" class="button is-primary">
 								<strong>Write</strong>
 							</nuxt-link>
-							<nuxt-link v-if="!userStore.email" to="/login" class="button is-light">
+							<nuxt-link to="/login" class="button is-light">
 								Log in
 							</nuxt-link>
-							<div class="dropdown is-hoverable" v-else>
+							<div class="dropdown is-hoverable">
 								<div class="dropdown-trigger">
 									<div class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-										<img :src="userStore.photoURL" v-if="userStore.photoURL">
-										<div v-else> {{ userStore.displayName }} </div>
+										<div>{{ userStore.email }}</div>
 									</div>
 								</div>
 								<div class="dropdown-menu" id="dropdown-menu4" role="menu">
@@ -63,21 +62,16 @@
 </template>
 
 <script setup>
-import {useUserStore} from "../stores/user";
-import { getAuth } from "firebase/auth";
 import { useRouter } from "vue-router";
+import { useNuxtApp } from "#app";
+import {useUserStore} from "../stores/user";
 
-const auth = getAuth();
-const userStore = useUserStore()
 const router = useRouter();
+const { $supaAuth } = useNuxtApp();
+const userStore = useUserStore()
 
 const logout = async () => {
-	try {
-		await auth.signOut();
-		userStore.logout();
-		router.push({ name: 'login' })
-	} catch (e){
-		console.log(e);
-	}
+	const { error } = await $supaAuth.signOut()
+	router.push("/login")
 }
 </script>

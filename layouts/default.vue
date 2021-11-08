@@ -5,19 +5,22 @@
 	</div>
 </template>
 <script setup>
-import {getAuth} from 'firebase/auth';
-import {useUserStore} from "../stores/user";
+import { useNuxtApp } from '#app';
+import { useUserStore } from '../stores/user';
 
-const auth = getAuth();
-const userStore = useUserStore()
-
-auth.onAuthStateChanged((auth) => {
-		if (auth?.currentUser) {
-			userStore.setUser(auth?.currentUser)
-		} else {
-			userStore.logout();
-		}
+const { $supaAuth } = useNuxtApp();
+const userStore = useUserStore();
+const setUser = () => {
+	const user = $supaAuth.user();
+	if (user) {
+		userStore.setUser({ email: user.email, full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url});
 	}
-);
+	console.log(user);
+}
+
+setUser();
+$supaAuth.onAuthStateChange((event, seesion) => {
+	setUser();
+});
 
 </script>

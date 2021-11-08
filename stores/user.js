@@ -4,20 +4,20 @@ export const useUserStore = defineStore('user', {
     state: () => {
         return {
             email: '',
-            displayName: '',
-            photoURL: '',
+            full_name: '',
+            avatar_url: '',
         }
     },
     actions: {
-        setUser({ email, displayName, photoURL }) {
+        setUser({ email, full_name, avatar_url }) {
             this.email = email;
-            this.displayName = displayName;
-            this.photoURL = photoURL;
+            this.full_name = full_name;
+            this.avatar_url = avatar_url;
         },
         logout() {
             this.email = '';
-            this.displayName = '';
-            this.photoURL = '';
+            this.full_name = '';
+            this.avatar_url = '';
         }
     },
 })

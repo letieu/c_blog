@@ -17,3 +17,19 @@
 		<article-item/>
 	</div>
 </template>
+
+<script setup>
+import { useNuxtApp } from '#app';
+
+const { $supabase } = useNuxtApp();
+
+async function fetchArticles() {
+	const { data, error } = await $supabase
+		.from('articles')
+		.select();
+
+	console.log(data, error);
+}
+
+fetchArticles();
+</script>
